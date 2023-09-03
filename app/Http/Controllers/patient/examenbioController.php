@@ -9,7 +9,7 @@ use App\Models\Examenbio;
 use App\Models\Exbiofiles;
 use Auth;
 
-class examenbioPatientController extends Controller
+class examenbioController extends Controller
 {
     public function index()
     {
@@ -17,7 +17,7 @@ class examenbioPatientController extends Controller
         $liste_examenbios = Examenbio::with('files','medecin')
             ->where('dossier', $dossier->id)
             ->get();
-        return view('patient.examenbios.index', compact('dossier','liste_examenbios'));
+        return view('patient.dossiers.examenbios.index', compact('dossier','liste_examenbios'));
     }
 
     public function show($id)
@@ -27,7 +27,7 @@ class examenbioPatientController extends Controller
             ->where('dossier', '=', $dossier->id)
             ->findorFail($id);
 
-        return view('patient.examenbios.show', compact('dossier','examenbio'));
+        return view('patient.dossiers.examenbios.show', compact('dossier','examenbio'));
     }
 
     public function edit($id)
@@ -36,7 +36,7 @@ class examenbioPatientController extends Controller
         $examenbio = Examenbio::with('files')
             ->where('dossier', '=', $dossier->id)
             ->findorFail($id);
-        return view('patient.examenbios.edit', compact('dossier','examenbio'));
+        return view('patient.dossiers.examenbios.edit', compact('dossier','examenbio'));
     }
 
     public function update(Request $request, $id)
@@ -62,7 +62,7 @@ class examenbioPatientController extends Controller
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
         $files = Exbiofiles::where('idexbio', '=', $id)->get();
-        return view('patient.examenbios.files', compact('dossier','files'));
+        return view('patient.dossiers.examenbios.files', compact('dossier','files'));
     }
 
     public function deleteFile($id)
@@ -78,7 +78,7 @@ class examenbioPatientController extends Controller
     public function create()
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        return view('patient.examenbios.create',compact('dossier'));
+        return view('patient.dossiers.examenbios.create',compact('dossier'));
     }
 
     public function store(Request $request)

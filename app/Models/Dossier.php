@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class Dossier extends Authenticatable implements AuthenticatableContract
+class Dossier extends Model
 {
 
     protected $guard = 'patient';

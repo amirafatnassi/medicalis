@@ -326,72 +326,74 @@ Route::middleware(['auth', 'check.role:3'])->group(function () {
 //Espace Patient
 Route::middleware(['auth', 'check.role:2'])->group(function () {
     Route::get('patient/dashboard', [App\Http\Controllers\patient\notificationController::class, 'dashboard']);
-    Route::get('patient', [App\Http\Controllers\patient\patientController::class, 'mondossier']);
+    
     Route::get('patient/profile', [App\Http\Controllers\patient\patientController::class, 'profile']);
     Route::get('patient/editMonProfil', [App\Http\Controllers\patient\patientController::class, 'editMonProfil']);
     Route::post('patient/updateProfil', [App\Http\Controllers\patient\patientController::class, 'updateProfil']);
-    Route::get('patient/mondossier', [App\Http\Controllers\patient\patientController::class, 'mondossier']);
-    Route::get('patient/editmondossier', [App\Http\Controllers\patient\patientController::class, 'editmondossier']);
-    Route::post('patient/updatemondossier', [App\Http\Controllers\patient\patientController::class, 'updatemondossier']);
     Route::get('patient/editmdp/{id}', [App\Http\Controllers\patient\patientController::class, 'editmdp']);
     Route::post('patient/editmdp/{id}', [App\Http\Controllers\patient\patientController::class, 'storeeditmdp']);
-    Route::get('patient/mesmedecins', [App\Http\Controllers\patient\patientController::class, 'mesmedecins']);
-    Route::get('patient/medecin/{id}', [App\Http\Controllers\patient\patientController::class, 'medecin']);
-    Route::get('patient/tousmedecins', [App\Http\Controllers\patient\patientController::class, 'tousmedecins']);
-    Route::post('patient/{id}/specialties',  [App\Http\Controllers\patient\patientController::class, 'storeSpecialties'])->name('patient.medecins.storeSpecialties');
-    Route::get('patient/medControle/{id}', [App\Http\Controllers\patient\patientController::class, 'medControle']);
-    Route::delete('patient/{id}/deleteMedecin', [App\Http\Controllers\patient\patientController::class, 'deleteMedecin'])->name('patient.deleteMedecin');
-    Route::get('patient/tousmedecinstous', [App\Http\Controllers\patient\patientController::class, 'tousmedecinstous']);
-    Route::get('patient/tousmedecins/{id}', [App\Http\Controllers\patient\patientController::class, 'AjouterMedecin']);
-    route::get('patient/imprimerMonDossier', [App\Http\Controllers\patient\patientController::class, 'imprimerMonDossier']);
+    
+    Route::get('patient', [App\Http\Controllers\patient\dossierController::class, 'mondossier']);
+    Route::get('patient/mondossier', [App\Http\Controllers\patient\dossierController::class, 'mondossier']);
+    Route::get('patient/editmondossier', [App\Http\Controllers\patient\dossierController::class, 'editmondossier']);
+    Route::post('patient/updatemondossier', [App\Http\Controllers\patient\dossierController::class, 'updatemondossier']);
+   
+    Route::get('patient/mesmedecins', [App\Http\Controllers\patient\medecinController::class, 'mesmedecins']);
+    Route::get('patient/medecin/{id}', [App\Http\Controllers\patient\medecinController::class, 'medecin']);
+    Route::get('patient/tousmedecins', [App\Http\Controllers\patient\medecinController::class, 'tousmedecins']);
+    Route::post('patient/{id}/specialties',  [App\Http\Controllers\patient\medecinController::class, 'storeSpecialties'])->name('patient.medecins.storeSpecialties');
+    Route::get('patient/medControle/{id}', [App\Http\Controllers\patient\medecinController::class, 'medControle']);
+    Route::delete('patient/{id}/deleteMedecin', [App\Http\Controllers\patient\medecinController::class, 'deleteMedecin'])->name('patient.deleteMedecin');
+    Route::get('patient/tousmedecinstous', [App\Http\Controllers\patient\medecinController::class, 'tousmedecinstous']);
+    Route::get('patient/tousmedecins/{id}', [App\Http\Controllers\patient\medecinController::class, 'AjouterMedecin']);
 
-    Route::get('/patient/consultations/index', [App\Http\Controllers\patient\consultationPatientController::class, 'index']);
-    Route::get('/patient/consultations/{id}/show', [App\Http\Controllers\patient\consultationPatientController::class, 'show']);
-    Route::get('/patient/consultations/getDownloadConsultationFiles/{id}', [App\Http\Controllers\patient\consultationPatientController::class, 'getDownloadConsultationFiles']);
-    Route::get('/patient/consultations/showConsultationFiles/{id}', [App\Http\Controllers\patient\consultationPatientController::class, 'showConsultationFiles']);
-    Route::get('/patient/consultations/create/{id}', [App\Http\Controllers\patient\consultationPatientController::class, 'create']);
-    Route::post('/patient/consultations/store', [App\Http\Controllers\patient\consultationPatientController::class, 'store']);
-    Route::get('/patient/consultations/edit/{idC}', [App\Http\Controllers\patient\consultationPatientController::class, 'edit']);
-    Route::post('/patient/consultations/update/{idC}', [App\Http\Controllers\patient\consultationPatientController::class, 'update']);
-    Route::delete('/patient/consultation/{id}/deleteFile', [App\Http\Controllers\patient\consultationPatientController::class, 'deleteFile'])->name('patient.consultation.deleteFile');
+    Route::get('patient/consultations/index', [App\Http\Controllers\patient\consultationController::class, 'index']);
+    Route::get('patient/consultations/{id}/show', [App\Http\Controllers\patient\consultationController::class, 'show']);
+    Route::get('patient/consultations/getDownloadConsultationFiles/{id}', [App\Http\Controllers\patient\consultationController::class, 'getDownloadConsultationFiles']);
+    Route::get('patient/consultations/showConsultationFiles/{id}', [App\Http\Controllers\patient\consultationController::class, 'showConsultationFiles']);
+    Route::get('patient/consultations/create/{id}', [App\Http\Controllers\patient\consultationController::class, 'create']);
+    Route::post('patient/consultations/store', [App\Http\Controllers\patient\consultationController::class, 'store']);
+    Route::get('patient/consultations/edit/{idC}', [App\Http\Controllers\patient\consultationController::class, 'edit']);
+    Route::post('patient/consultations/update/{idC}', [App\Http\Controllers\patient\consultationController::class, 'update']);
+    Route::delete('patient/consultation/{id}/deleteFile', [App\Http\Controllers\patient\consultationController::class, 'deleteFile'])->name('patient.consultation.deleteFile');
 
-    Route::get('/patient/examenbios/index', [App\Http\Controllers\patient\examenbioPatientController::class, 'index']);
-    Route::get('/patient/examenbios/{id}/show', [App\Http\Controllers\patient\examenbioPatientController::class, 'show']);
-    Route::get('/patient/examenbios/showExamenbioFiles/{id}', [App\Http\Controllers\patient\examenbioPatientController::class, 'showExamenbioFiles']);
-    Route::get('/patient/examenbios/create', [App\Http\Controllers\patient\examenbioPatientController::class, 'create']);
-    Route::post('/patient/examenbios/store', [App\Http\Controllers\patient\examenbioPatientController::class, 'store']);
-    Route::get('/patient/examenbios/urlBio/{id}', [App\Http\Controllers\patient\examenbioPatientController::class, 'urlBio']);
-    Route::get('/patient/examenbios/edit/{idC}', [App\Http\Controllers\patient\examenbioPatientController::class, 'edit']);
-    Route::post('/patient/examenbios/update/{idC}', [App\Http\Controllers\patient\examenbioPatientController::class, 'update']);
-    Route::delete('/patient/examenbio/{id}/deleteFile', [App\Http\Controllers\patient\examenbioPatientController::class, 'deleteFile'])->name('patient.examenbio.deleteFile');
+    Route::get('patient/examenbios/index', [App\Http\Controllers\patient\examenbioController::class, 'index']);
+    Route::get('patient/examenbios/{id}/show', [App\Http\Controllers\patient\examenbioController::class, 'show']);
+    Route::get('patient/examenbios/showExamenbioFiles/{id}', [App\Http\Controllers\patient\examenbioController::class, 'showExamenbioFiles']);
+    Route::get('patient/examenbios/create', [App\Http\Controllers\patient\examenbioController::class, 'create']);
+    Route::post('patient/examenbios/store', [App\Http\Controllers\patient\examenbioController::class, 'store']);
+    Route::get('patient/examenbios/urlBio/{id}', [App\Http\Controllers\patient\examenbioController::class, 'urlBio']);
+    Route::get('patient/examenbios/edit/{idC}', [App\Http\Controllers\patient\examenbioController::class, 'edit']);
+    Route::post('patient/examenbios/update/{idC}', [App\Http\Controllers\patient\examenbioController::class, 'update']);
+    Route::delete('patient/examenbio/{id}/deleteFile', [App\Http\Controllers\patient\examenbioController::class, 'deleteFile'])->name('patient.examenbio.deleteFile');
 
-    Route::get('/patient/examenradios/index', [App\Http\Controllers\patient\examenradioPatientController::class, 'index']);
-    Route::get('/patient/examenradios/{id}/show', [App\Http\Controllers\patient\examenradioPatientController::class, 'show']);
-    Route::get('/patient/examenradios/getDownloadexradioFiles/{id}', [App\Http\Controllers\patient\examenradioPatientController::class, 'getDownload']);
-    Route::get('/patient/examenradios/showExamenradioFiles/{id}', [App\Http\Controllers\patient\examenradioPatientController::class, 'showExamenradioFiles']);
-    Route::get('/patient/examenradios/create', [App\Http\Controllers\patient\examenradioPatientController::class, 'create']);
-    Route::post('/patient/examenradios/store', [App\Http\Controllers\patient\examenradioPatientController::class, 'store']);
-    Route::get('/patient/examenradios/urlRadio/{id}', [App\Http\Controllers\patient\examenradioPatientController::class, 'urlRadio']);
-    Route::get('/patient/examenradios/edit/{idC}', [App\Http\Controllers\patient\examenradioPatientController::class, 'edit']);
-    Route::post('/patient/examenradios/update/{idC}', [App\Http\Controllers\patient\examenradioPatientController::class, 'update']);
-    Route::delete('/patient/examenradio/{id}/deleteFile', [App\Http\Controllers\patient\examenradioPatientController::class, 'deleteFile'])->name('patient.examenradio.deleteFile');
+    Route::get('patient/examenradios/index', [App\Http\Controllers\patient\examenradioController::class, 'index']);
+    Route::get('patient/examenradios/{id}/show', [App\Http\Controllers\patient\examenradioController::class, 'show']);
+    Route::get('patient/examenradios/getDownloadexradioFiles/{id}', [App\Http\Controllers\patient\examenradioController::class, 'getDownload']);
+    Route::get('patient/examenradios/showExamenradioFiles/{id}', [App\Http\Controllers\patient\examenradioController::class, 'showExamenradioFiles']);
+    Route::get('patient/examenradios/create', [App\Http\Controllers\patient\examenradioController::class, 'create']);
+    Route::post('patient/examenradios/store', [App\Http\Controllers\patient\examenradioController::class, 'store']);
+    Route::get('patient/examenradios/urlRadio/{id}', [App\Http\Controllers\patient\examenradioController::class, 'urlRadio']);
+    Route::get('patient/examenradios/edit/{idC}', [App\Http\Controllers\patient\examenradioController::class, 'edit']);
+    Route::post('patient/examenradios/update/{idC}', [App\Http\Controllers\patient\examenradioController::class, 'update']);
+    Route::delete('patient/examenradio/{id}/deleteFile', [App\Http\Controllers\patient\examenradioController::class, 'deleteFile'])->name('patient.examenradio.deleteFile');
 
     //Discussion Patient
-    Route::get('patient/discussions/forum', [App\Http\Controllers\patient\patientDiscussionsController::class, 'forum']);
-    Route::get('patient/discussions/cloture',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'forum_cloture']);
-    Route::get('patient/discussions/create',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'create']);
-    Route::get('patient/discussions/createMed/{id}',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'createMed']);
-    Route::get('patient/discussions/createById/{id}',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'createById']);
-    Route::get('patient/discussions/createMedControle/{id}',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'createMedControle']);
-    Route::post('patient/discussions/store',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'store']);
-    Route::post('patient/discussions/storeMed',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'storeMed']);
-    Route::get('patient/discussions/recu',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'recu']);
-    Route::get('patient/discussions/recucloture',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'recu_cloture']);
-    Route::get('patient/discussions/envoye',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'envoye']);
-    Route::get('patient/discussions/envoyecloture',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'envoye_cloture']);
-    Route::get('patient/discussions/show/{slug}',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'show']);
-    Route::post('patient/discussions/reply/{id}',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'reply']);
-    Route::get('/patient/discussions/cloturer/{id}',  [App\Http\Controllers\patient\patientDiscussionsController::class, 'cloturer']);
+    Route::get('patient/discussions/forum', [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'forum']);
+    Route::get('patient/discussions/cloture',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'forum_cloture']);
+    Route::get('patient/discussions/create',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'create']);
+    Route::get('patient/discussions/createMed/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'createMed']);
+    Route::get('patient/discussions/createById/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'createById']);
+    Route::get('patient/discussions/createMedControle/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'createMedControle']);
+    Route::post('patient/discussions/store',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'store']);
+    Route::post('patient/discussions/storeMed',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'storeMed']);
+    Route::get('patient/discussions/recu',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'recu']);
+    Route::get('patient/discussions/recucloture',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'recu_cloture']);
+    Route::get('patient/discussions/envoye',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'envoye']);
+    Route::get('patient/discussions/envoyecloture',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'envoye_cloture']);
+    Route::get('patient/discussions/show/{slug}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'show']);
+    Route::post('patient/discussions/reply/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'reply']);
+    Route::get('/patient/discussions/cloturer/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'cloturer']);
 
     ///////////
 

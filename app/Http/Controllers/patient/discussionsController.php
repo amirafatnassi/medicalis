@@ -14,7 +14,7 @@ use Auth;
 use Illuminate\Support\Facades\Redirect;
 
 
-class patientDiscussionsController extends Controller
+class discussionsController extends Controller
 {
 
   public function create()

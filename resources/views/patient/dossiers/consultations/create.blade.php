@@ -20,8 +20,8 @@
                 </select>
             </div>
             <div class="col-6">
-                <label for="motif"><b>Motif:</b></label>
-                <select class="form-control" name="motif" id="motif">
+                <label for="motif_id"><b>Motif:</b></label>
+                <select class="form-control" name="motif_id" id="motif_id">
                     @foreach ($Motifs as $motif)
                     <option value="{{$motif->id}}">{{$motif->lib}}</option>
                     @endforeach

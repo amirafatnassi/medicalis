@@ -10,7 +10,7 @@ use App\Models\Exradiofiles;
 use App\Models\Dossier;
 use Auth;
 
-class examenradioPatientController extends Controller
+class examenradioController extends Controller
 {
     public function index()
     {
@@ -18,7 +18,7 @@ class examenradioPatientController extends Controller
         $liste_examenradios = Examenradio::with('files')
             ->where('dossier', $dossier->id)
             ->get();
-        return view('patient.examenradios.index', compact('dossier','liste_examenradios'));
+        return view('patient.dossiers.examenradios.index', compact('dossier','liste_examenradios'));
     }
 
     public function show($idC)
@@ -28,13 +28,13 @@ class examenradioPatientController extends Controller
             ->where('dossier', $dossier->id)
             ->findorFail($idC);
 
-        return view('patient.examenradios.show', compact('dossier','examenradio'));
+        return view('patient.dossiers.examenradios.show', compact('dossier','examenradio'));
     }
 
     public function create()
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        return view('patient.examenradios.create',compact('dossier'));
+        return view('patient.dossiers.examenradios.create',compact('dossier'));
     }
 
     public function store(Request $request)
@@ -68,7 +68,7 @@ class examenradioPatientController extends Controller
         $examenradio = Examenradio::with('files', 'Radio', 'typeradio')
             ->where('dossier', $dossier->id)
             ->findorFail($idC);
-        return view('patient.examenradios.edit', compact('dossier','examenradio'));
+        return view('patient.dossiers.examenradios.edit', compact('dossier','examenradio'));
     }
 
     public function update(Request $request, $id)
@@ -91,14 +91,14 @@ class examenradioPatientController extends Controller
                 $photo->save();
             }
         }
-        return redirect('/patient/examenradios/' . $id . '/show');
+        return redirect('patient/dossiers/examenradios/' . $id . '/show');
     }
 
     public function showExamenradioFiles($id)
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
         $files = Exradiofiles::where('idexradio', $id)->get();
-        return view('patient.examenradios.files', compact('dossier','files'));
+        return view('patient.dossiers.examenradios.files', compact('dossier','files'));
     }
 
     public function urlRadio($id)
