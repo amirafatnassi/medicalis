@@ -31,7 +31,6 @@
                     <p class="card-text">@if($dossier->user->country_id) <i data-feather="flag"></i><b> Pays: </b>{{$dossier->user->Country->lib}}@endif</p>
                     <p class="card-text">@if($dossier->user->ville_id) <i data-feather="map-pin"></i><b> Ville: </b>{{$dossier->user->Ville->name}}@endif</p>
                     <p class="card-text">@if($dossier->user->cp) <b>Code postal: </b>{{$dossier->user->cp}}@endif</p>
-                    <p class="card-text">@if($dossier->user->tel) <i data-feather="phone"></i><b> Tel: </b>{{$dossier->user->tel}}@endif</p>
                 </div>
             </div>
         </div>

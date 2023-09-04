@@ -5,6 +5,7 @@ namespace App\Http\Controllers\patient;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Dossier;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class dossierController extends Controller
@@ -19,29 +20,42 @@ class dossierController extends Controller
 
     public function updatemondossier(Request $request)
     {
-        $patient = Dossier::where('user_id', Auth::user()->id)->first();
-        $patient->fill($request->only([
-            'nom', 'prenom', 'lieunaissance', 'tel', 'email', 'profession',
-            'contactdurgence', 'pays', 'ville', 'cp', 'rue'
-        ]));
+        $dossier = Dossier::where('user_id', Auth::user()->id)->first();
+        $user = User::findorFail(Auth::user()->id);
 
+        $user->update([
+            'nom' => $request->input('nom'),
+            'prenom' => $request->input('prenom'),
+            'lieunaissance' => $request->input('lieunaissance'),
+            'tel' => $request->input('tel'),
+            'profession_id' => $request->input('profession'),
+            'country_id'=>$request->input('pays'),
+            'ville_id'=>$request->input('ville'),
+            'cp'=>$request->input('cp'),
+            'rue'=>$request->input('rue')
+        ]);
+        $dossier->update([
+            'contactdurgence' => $request->input('contactdurgence'),
+            'taille' => $request->input('taille'),
+            'poids' => $request->input('poids'),
+            'groupe_sanguin' => $request->input('groupe_sanguin'),
+        ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $id_image = $request->input('nom') . '_' . $request->input('prenom') . '_' . $patient->id;
-            $filename = $id_image . '.' . $file->getClientOriginalExtension();
+            $filename = $request->input('nom') . '_' . $request->input('prenom') . '_' . $dossier->id . '.' . $file->getClientOriginalExtension();
             $file->move('uploads/dossier/', $filename);
-            $patient->image = $filename;
+            $user->image = $filename;
         }
 
-        $patient->save();
+        $user->save();
 
-        return redirect('patient/dossiers/mondossier');
+        return redirect('patient/mondossier');
     }
 
     public function mondossier()
     {
         if (Auth::check()) {
-            $dossier = Dossier::with('user', 'bloodtype')->where('user_id', Auth::user()->id)->first();
+            $dossier = Dossier::where('user_id', Auth::user()->id)->first();
         }
         return view('patient.dossiers.mondossier', compact('dossier'));
     }

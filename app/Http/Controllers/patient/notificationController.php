@@ -4,7 +4,6 @@ namespace App\Http\Controllers\patient;
 
 use App\Http\Controllers\Controller;
 use App\Models\GenInvoice;
-use App\Models\Invoice;
 use App\Models\Notification;
 
 class notificationController extends Controller

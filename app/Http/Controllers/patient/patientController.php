@@ -14,13 +14,15 @@ class patientController extends Controller
 {
     public function profile()
     {
-        $patient = User::with('Country', 'Ville', 'Sexe')->findorFail(Auth::user()->id);
+        $patient = User::findorFail(Auth::user()->id);
+
         return view('patient.profile.profile', compact('patient'));
     }
 
     public function editMonProfil()
     {
-        $patient = User::with('Sexe', 'Country', 'Ville')->findorFail(Auth::user()->id);
+        $patient = User::findorFail(Auth::user()->id);
+
         return view('patient.profile.editMonProfil', compact('patient'));
     }
 
@@ -76,6 +78,7 @@ class patientController extends Controller
     public function editmdp()
     {
         $patient = User::findorFail(Auth::user()->id);
+        
         return view('patient.profile.editmdp', compact('patient'));
     }
 

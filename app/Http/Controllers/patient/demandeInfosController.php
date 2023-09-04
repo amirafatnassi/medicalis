@@ -5,12 +5,10 @@ namespace App\Http\Controllers\patient;
 use App\Http\Controllers\Controller;
 use App\Models\DemandeConsultation;
 use App\Models\Dossier;
-use App\Models\RepDemandeInfosFiles;
 use App\Models\RepDemandeInfos;
 use App\Models\DemandeInfos;
-use App\Models\DemandeInfosFiles;
+use App\Models\RepDemandeInfosFile;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,8 +16,7 @@ class demandeInfosController extends Controller
 {
 	public function repDemandeInfos($id)
 	{
-		$demandeInfos =  DemandeInfos::findorFail( $id);
-		$x = $demandeInfos->update(['status_id' => 7, 'read_at' => now()]);
+		$demandeInfos =  DemandeInfos::findorFail( $id)->update(['status_id' => 7, 'read_at' => now()]);
 		
 		$demandeCons = DemandeConsultation::findorFail($demandeInfos->demande_cons_id);
 
@@ -36,8 +33,8 @@ class demandeInfosController extends Controller
 		$repDemande->created_by = auth::user()->id;
 		$repDemande->save();
 
-		$var = DemandeInfos::find($request->input('demande_infos_id'));
-		$var->update(['status_id' => 8]);
+		$var = DemandeInfos::find($request->input('demande_infos_id'))->update(['status_id' => 8]);
+		
 		DemandeConsultation::find($var->demande_cons_id)->update(['status_id' => 9]);
 		$user = User::find($var->created_by);
 		$data = [
@@ -50,7 +47,7 @@ class demandeInfosController extends Controller
 		if ($files = $request->file('filesup')) {
 			foreach ($files as $img) {
 				$img->move('uploads/repDemandeInfos/', $repDemande->id . "-" . time() . "-" . $img->getClientOriginalName());
-				$photo = new RepDemandeInfosFiles;
+				$photo = new RepDemandeInfosFile();
 				$photo->idRepDemandeInfos = $repDemande->id;
 				$photo->downloads = $repDemande->id . "-" . time() . "-" . $img->getClientOriginalName();
 				$photo->save();

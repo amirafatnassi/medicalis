@@ -49,7 +49,7 @@
           <div class="col-md-6 col-12">
             <label for="dossier"><b>Dossier médical:</b></label>
             <select name="dossier_id" id="dossier_id" class="form-control">
-              <option value="{{$dossier->id}}">{{$dossier->id}}: {{$dossier->prenom}} {{$dossier->nom}}</option>
+              <option value="{{$dossier->id}}">{{$dossier->id}}: {{$dossier->user->prenom}} {{$dossier->user->nom}}</option>
             </select>
           </div>
           <div class="col-12">

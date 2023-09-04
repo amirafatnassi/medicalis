@@ -152,7 +152,7 @@
     @break
     @case(8)
     <div class="row card-body">
-        <a href="{{url('patient/demandeCons/show-devis/'.$gen_invoice->id)}}" class="btn btn-link">
+        <a href="{{url('patient/devis/'.$demandeCons->genInvoice->id.'/show')}}" class="btn btn-link">
             <i data-feather="eye"></i> afficher devis
         </a>
         <form method="POST" action="{{url('patient/demandeCons/'.$demandeCons->id.'/cloturer')}}" enctype="multipart/form-data"> {{csrf_field()}}

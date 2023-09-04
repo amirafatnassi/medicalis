@@ -379,21 +379,21 @@ Route::middleware(['auth', 'check.role:2'])->group(function () {
     Route::delete('patient/examenradio/{id}/deleteFile', [App\Http\Controllers\patient\examenradioController::class, 'deleteFile'])->name('patient.examenradio.deleteFile');
 
     //Discussion Patient
-    Route::get('patient/discussions/forum', [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'forum']);
-    Route::get('patient/discussions/cloture',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'forum_cloture']);
-    Route::get('patient/discussions/create',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'create']);
-    Route::get('patient/discussions/createMed/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'createMed']);
-    Route::get('patient/discussions/createById/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'createById']);
-    Route::get('patient/discussions/createMedControle/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'createMedControle']);
-    Route::post('patient/discussions/store',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'store']);
-    Route::post('patient/discussions/storeMed',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'storeMed']);
-    Route::get('patient/discussions/recu',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'recu']);
-    Route::get('patient/discussions/recucloture',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'recu_cloture']);
-    Route::get('patient/discussions/envoye',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'envoye']);
-    Route::get('patient/discussions/envoyecloture',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'envoye_cloture']);
-    Route::get('patient/discussions/show/{slug}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'show']);
-    Route::post('patient/discussions/reply/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'reply']);
-    Route::get('/patient/discussions/cloturer/{id}',  [App\Http\Controllers\patient\demandeConsControlleriscussionsController::class, 'cloturer']);
+    Route::get('patient/discussions/forum', [App\Http\Controllers\patient\discussionsController::class, 'forum']);
+    Route::get('patient/discussions/cloture',  [App\Http\Controllers\patient\discussionsController::class, 'forum_cloture']);
+    Route::get('patient/discussions/create',  [App\Http\Controllers\patient\discussionsController::class, 'create']);
+    Route::get('patient/discussions/createMed/{id}',  [App\Http\Controllers\patient\discussionsController::class, 'createMed']);
+    Route::get('patient/discussions/createById/{id}',  [App\Http\Controllers\patient\discussionsController::class, 'createById']);
+    Route::get('patient/discussions/createMedControle/{id}',  [App\Http\Controllers\patient\discussionsController::class, 'createMedControle']);
+    Route::post('patient/discussions/store',  [App\Http\Controllers\patient\discussionsController::class, 'store']);
+    Route::post('patient/discussions/storeMed',  [App\Http\Controllers\patient\discussionsController::class, 'storeMed']);
+    Route::get('patient/discussions/recu',  [App\Http\Controllers\patient\discussionsController::class, 'recu']);
+    Route::get('patient/discussions/recucloture',  [App\Http\Controllers\patient\discussionsController::class, 'recu_cloture']);
+    Route::get('patient/discussions/envoye',  [App\Http\Controllers\patient\discussionsController::class, 'envoye']);
+    Route::get('patient/discussions/envoyecloture',  [App\Http\Controllers\patient\discussionsController::class, 'envoye_cloture']);
+    Route::get('patient/discussions/show/{slug}',  [App\Http\Controllers\patient\discussionsController::class, 'show']);
+    Route::post('patient/discussions/reply/{id}',  [App\Http\Controllers\patient\discussionsController::class, 'reply']);
+    Route::get('/patient/discussions/cloturer/{id}',  [App\Http\Controllers\patient\discussionsController::class, 'cloturer']);
 
     ///////////
 

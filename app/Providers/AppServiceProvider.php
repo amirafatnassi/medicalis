@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
             'medecin.profile',
             'medecin.medecins.create',
             'patient.medecins.create',
-            'patient.editMonProfil',
+            'patient.profile.editMonProfil',
             'administrateur.medecins.edit',
             'administrateur.dossiers.create',
             'administrateur.medecins.create',
@@ -54,10 +54,9 @@ class AppServiceProvider extends ServiceProvider
             'medecin.medecins.create',
             'medecin.editMonProfil',
             'medecin.discussionMedecin.create',
-            'patient.tousmedecins',
-            'patient.editmondossier',
-            'patient.editMonProfil',
-            'patient.discussions.create',
+            'patient.medecins.tousmedecins',
+            'patient.dossiers.editmondossier',
+            'patient.profile.editMonProfil',
             'administrateur.medecins.edit',
             'administrateur.pays.index',
             'administrateur.dossiers.create',
@@ -79,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
             'administrateur.groupesanguins.index',
             'administrateur.dossiers.create',
             'administrateur.dossiers.edit',
-            'patient.editmondossier',
+            'patient.dossiers.editmondossier',
             'coordinateur.dossiers.edit',
         ], 'App\Http\View\Composers\BloodtypeComposer');
 
@@ -90,13 +89,13 @@ class AppServiceProvider extends ServiceProvider
             'medecin.edit',
             'administrateur.dossiers.create',
             'administrateur.dossiers.edit',
-            'patient.editmondossier',
+            'patient.dossiers.editmondossier',
             'coordinateur.dossiers.edit',
         ], 'App\Http\View\Composers\ProfessionComposer');
 
         View::composer([
             'medecin.dossiers.examenbios.edit',
-            'patient.consultations.create',
+            'patient.dossiers.consultations.create',
             'administrateur.dossiers.consultations.create',
             'administrateur.dossiers.consultations.edit',
             'administrateur.dossiers.examenbios.create',
@@ -110,15 +109,15 @@ class AppServiceProvider extends ServiceProvider
             'administrateur.dossiers.examenradios.edit',
             'medecin.examenradios.create',
             'medecin.examenradios.edit',
-            'patient.examenradios.create',
-            'patient.examenradios.edit'
+            'patient.dossiers.examenradios.create',
+            'patient.dossiers.examenradios.edit'
         ], 'App\Http\View\Composers\RadioTypeComposer');
 
         View::composer([
             'medecin.consultations.create',
             'medecin.consultations.edit',
-            'patient.consultations.create',
-            'patient.consultations.edit',
+            'patient.dossiers.consultations.create',
+            'patient.dossiers.consultations.edit',
             'administrateur.motifs.index',
             'administrateur.dossiers.consultations.create',
             'administrateur.dossiers.consultations.edit',
@@ -131,8 +130,8 @@ class AppServiceProvider extends ServiceProvider
             'medecin.medecins.create',
             'medecin.editMonProfil',
             'medecin.discussionMedecin.create',
-            'patient.medControle',
-            'patient.examenradios.create',
+            'patient.medecins.medControle',
+            'patient.dossiers.examenradios.create',
             'patient.discussions.create',
             'administrateur.medecins.edit',
             'administrateur.specialites.index',

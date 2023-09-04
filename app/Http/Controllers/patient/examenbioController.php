@@ -14,18 +14,15 @@ class examenbioController extends Controller
     public function index()
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        $liste_examenbios = Examenbio::with('files','medecin')
-            ->where('dossier', $dossier->id)
-            ->get();
+        $liste_examenbios = Examenbio::where('dossier', $dossier->id)->get();
+
         return view('patient.dossiers.examenbios.index', compact('dossier','liste_examenbios'));
     }
 
     public function show($id)
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        $examenbio = Examenbio::with('files')
-            ->where('dossier', '=', $dossier->id)
-            ->findorFail($id);
+        $examenbio = Examenbio::where('dossier', $dossier->id)->findorFail($id);
 
         return view('patient.dossiers.examenbios.show', compact('dossier','examenbio'));
     }
@@ -33,9 +30,8 @@ class examenbioController extends Controller
     public function edit($id)
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        $examenbio = Examenbio::with('files')
-            ->where('dossier', '=', $dossier->id)
-            ->findorFail($id);
+        $examenbio = Examenbio::where('dossier', $dossier->id)->findorFail($id);
+
         return view('patient.dossiers.examenbios.edit', compact('dossier','examenbio'));
     }
 
@@ -61,7 +57,8 @@ class examenbioController extends Controller
     public function showExamenbioFiles($id)
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        $files = Exbiofiles::where('idexbio', '=', $id)->get();
+        $files = Exbiofiles::where('idexbio', $id)->get();
+
         return view('patient.dossiers.examenbios.files', compact('dossier','files'));
     }
 
@@ -78,6 +75,7 @@ class examenbioController extends Controller
     public function create()
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
+
         return view('patient.dossiers.examenbios.create',compact('dossier'));
     }
 
@@ -100,14 +98,13 @@ class examenbioController extends Controller
         if ($files = $request->file('filesup')) {
             foreach ($files as $img) {
                 $img->move('uploads/exbio/', $examenbio->dossier . "-" . time() . "-" . $img->getClientOriginalName());
-                $request->session()->flash('alert-success', 'file was successful added!');
                 $photo = new exbiofiles;
                 $photo->idexbio = $examenbio->id;
                 $photo->downloads = $examenbio->dossier . "-" . time() . "-" . $img->getClientOriginalName();
                 $photo->save();
             }
         }
-        return redirect('/patient/examenbios/' . $examenbio->id . '/show');
+        return redirect('patient/examenbios/' . $examenbio->id . '/show');
     }
 
     public function urlBio($id)

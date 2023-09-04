@@ -54,9 +54,9 @@ class DemandeConsultation extends Authenticatable
         return $this->hasMany(DemandeConsFiles::class, 'idDemandeCons');
     }
 
-    public function genInvoices()
+    public function genInvoice()
     {
-        return $this->hasMany(GenInvoice::class,'demande_cons_id');
+        return $this->hasOne(GenInvoice::class,'demande_cons_id');
     }
 
     public function demandeDevis()

@@ -20,7 +20,8 @@ class discussionsController extends Controller
   public function create()
   {
     $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-    $meds = User::with('Specialite', 'Country', 'Ville')->where('role_id', 3)->get();
+    $meds = User::where('role_id', 3)->get();
+
     return view('patient.discussions.create', compact('meds', 'dossier'));
   }
 
@@ -69,48 +70,27 @@ class discussionsController extends Controller
 
   public function recu()
   {
-    $discussions = DiscussionsMedPatient::with('replies', 'emetteur', 'lastReply')
-      ->where('destination_id', Auth::user()->id)
+    $discussions = DiscussionsMedPatient::where('destination_id', Auth::user()->id)
       ->where('cloture', 0)
       ->orderBy('created_at', 'desc')
       ->get();
-    foreach ($discussions as $discussion) {
-      if ($discussion->lastReply) {
-        if ($discussion->lastReply->M_P === 'P') {
-          $lastEmetteur = User::findorFail($discussion->lastReply->emetteur_id);
-        } else {
-          $lastEmetteur = User::findorFail($discussion->lastReply->emetteur_id);
-        }
-        $discussion->lastEmetteur = $lastEmetteur;
-      }
-    }
+
     return view('patient.discussions.recu', compact('discussions'));
   }
 
   public function recu_cloture()
   {
-    $discussions = DiscussionsMedPatient::with('replies', 'emetteur', 'lastReply')
-      ->where('destination_id', Auth::user()->id)
+    $discussions = DiscussionsMedPatient::where('destination_id', Auth::user()->id)
       ->where('cloture', 1)
       ->orderBy('created_at', 'desc')
       ->get();
-    foreach ($discussions as $discussion) {
-      if ($discussion->lastReply) {
-        if ($discussion->lastReply->M_P === 'P') {
-          $lastEmetteur = User::findorFail($discussion->lastReply->emetteur_id);
-        } else {
-          $lastEmetteur = User::findorFail($discussion->lastReply->emetteur_id);
-        }
-        $discussion->lastEmetteur = $lastEmetteur;
-      }
-    }
+
     return view('patient.discussions.recu_cloture', compact('discussions'));
   }
 
   public function envoye()
   {
-    $discussions = DiscussionsMedPatient::with('replies', 'destinataire', 'lastReply')
-      ->where('emetteur_id', Auth::user()->id)
+    $discussions = DiscussionsMedPatient::where('emetteur_id', Auth::user()->id)
       ->where('cloture', 0)
       ->orderBy('created_at', 'desc')
       ->get();
@@ -120,8 +100,7 @@ class discussionsController extends Controller
 
   public function envoye_cloture()
   {
-    $discussions = DiscussionsMedPatient::with('replies', 'destinataire', 'lastReply')
-      ->where('emetteur_id', Auth::user()->id)
+    $discussions = DiscussionsMedPatient::where('emetteur_id', Auth::user()->id)
       ->where('cloture', 1)
       ->orderBy('created_at', 'desc')
       ->get();
@@ -131,12 +110,12 @@ class discussionsController extends Controller
 
   public function show($slug)
   {
-    $d = DiscussionsMedPatient::with('destinataire', 'emetteur')->where('slug', $slug)->first();
+    $d = DiscussionsMedPatient::where('slug', $slug)->first();
     if (Auth::user()->id == $d->destinataire_id) {
       $d->etat = 1;
       $d->save();
     }
-    $replies = ReplyMedPatient::with('files', 'emetteur')->where('discussion_id', $d->id)
+    $replies = ReplyMedPatient::where('discussion_id', $d->id)
       ->orderBy('updated_at', 'desc')
       ->get();
 
@@ -164,13 +143,12 @@ class discussionsController extends Controller
       $d->updated_at = $reply->created_at;
       $d->save();
       if ($files = $r->file('filesup')) {
-        $destinationPath = public_path('/uploads/courrierMedPatient/');
         foreach ($files as $img) {
           $profileImage = $img->getClientOriginalName();
-          $img->move($destinationPath, $profileImage);
+          $img->move('uploads/courrierMedPatient', $profileImage);
           $photo = new ReplyfilesMedPat();
           $photo->id_reply_med_patients = $reply->id;
-          $photo->downloads = "$profileImage";
+          $photo->downloads = $profileImage;
           $photo->save();
         }
       }
@@ -180,22 +158,20 @@ class discussionsController extends Controller
 
   public function cloturer($id)
   {
-    $d = DiscussionsMedPatient::find($id);
-    $d->cloture = 1;
-    $d->save();
+    DiscussionsMedPatient::findorFail($id)->update(['cloture' => 1]);
+
     return Redirect::back();
   }
 
   public function forum()
   {
-    $discussions = DiscussionsMedPatient::with('emetteur', 'destinataire')
-    ->where(function ($query) {
-        $query->where('emetteur_id', Auth::user()->id)
-            ->orWhere('destination_id', Auth::user()->id);
+    $discussions = DiscussionsMedPatient::where(function ($query) {
+      $query->where('emetteur_id', Auth::user()->id)
+        ->orWhere('destination_id', Auth::user()->id);
     })
-    ->where('cloture', 0)
-    ->orderBy('updated_at', 'desc')
-    ->get();
+      ->where('cloture', 0)
+      ->orderBy('updated_at', 'desc')
+      ->get();
 
 
     return view('patient.discussions.forum', ['discussions' => $discussions]);
@@ -203,11 +179,10 @@ class discussionsController extends Controller
 
   public function forum_cloture()
   {
-    $discussions = DiscussionsMedPatient::with('emetteur', 'destinataire')
-      ->where(function ($query) {
-        $query->where('emetteur_id', Auth::user()->id)
-          ->orWhere('destination_id', Auth::user()->id);
-      })
+    $discussions = DiscussionsMedPatient::where(function ($query) {
+      $query->where('emetteur_id', Auth::user()->id)
+        ->orWhere('destination_id', Auth::user()->id);
+    })
       ->where('cloture', 1)
       ->orderBy('updated_at', 'desc')
       ->get();

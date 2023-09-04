@@ -12,9 +12,7 @@ use App\Models\DemandeConsFiles;
 use App\Models\User;
 use App\Models\DemandeInfos;
 use App\Models\GenInvoice;
-use App\Models\GenInvoiceLine;
 use App\Models\RepDemandeInfos;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -65,6 +63,7 @@ class demandeConsController extends Controller
 
 		$demandes = DemandeConsultation::with('status', 'coordinateurEnCharge', 'dossier', 'files', 'createdBy')
 			->get();
+
 		return view('patient.demandeCons.show', compact('dossier', 'demandes'));
 	}
 
@@ -72,9 +71,7 @@ class demandeConsController extends Controller
 	{
 		$demandeCons = DemandeConsultation::findorFail($id);
 
-		$demandeInfos =  DemandeInfos::with('files', 'Status', 'createdBy')
-			->where('demande_cons_id', $id)
-			->first();
+		$demandeInfos =  DemandeInfos::where('demande_cons_id', $id)->first();
 
 		$dossier = Dossier::findorfail($demandeCons->dossier_id);
 
@@ -88,28 +85,10 @@ class demandeConsController extends Controller
 
 	public function consulter($id)
 	{
-		$demande = DemandeConsultation::select(
-			'demande_consultation.id',
-			'demande_consultation.status_id',
-			'status_demandes.lib as status',
-			'demande_consultation.coordinateur_en_charge',
-			DB::raw("concat(users.prenom,' ',users.nom) as coordinateurEnCharge"),
-			DB::raw("concat(u.prenom,' ',u.nom) as user"),
-			'demande_consultation.dossier_id',
-			'demande_consultation.observation'
-		)
-			->leftJoin('status_demandes', 'status_demandes.id', '=', 'demande_consultation.status_id')
-			->leftJoin('users', 'users.id', '=', 'demande_consultation.coordinateur_en_charge')
-			->leftJoin('users as u', 'u.id', '=', 'demande_consultation.created_by')
-			->leftJoin('affectation_demandes_consultations', 'affectation_demandes_consultations.demandeCons_id', '=', 'demande_consultation.id')
-			->where('demande_consultation.id', '=', $id)
-			->first();
-
+		$demande = DemandeConsultation::findorFail($id);
 		$dossier = Dossier::findorfail($demande->dossier_id);
-		return view('patient.demandeCons.demande', [
-			'dossier' => $dossier,
-			'demande' => $demande,
-		]);
+
+		return view('patient.demandeCons.demande', compact('dossier','demande'));
 	}
 
 	public function affecter($id, Request $request)
@@ -148,7 +127,6 @@ class demandeConsController extends Controller
 		return Redirect::back();
 	}
 
-
 	public function enAttenteInfos($id)
 	{
 		DemandeConsultation::findorFail($id)->update(['status_id' => 3]);
@@ -156,9 +134,9 @@ class demandeConsController extends Controller
 		return Redirect::back();
 	}
 
-	public function showDevis($id_devis)
+	public function showDevis($id)
 	{
-		$invoice = GenInvoice::findorFail($id_devis);
+		$invoice = GenInvoice::findorFail($id);
 
 		return view('patient.demandeCons.show-invoice', compact('invoice'));
 	}

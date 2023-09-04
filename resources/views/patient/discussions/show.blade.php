@@ -48,12 +48,14 @@
         <div class="col-9">
           <p id="cloture" hidden>{{$d->cloture}}</p>
         </div>
+        @if($d->dossier_id)
         <div class="col-3">
           <a class="btn btn-outline-dark pull-right" href="{{url('patient/mondossier')}}" role="button">
             <i data-feather="bookmark"></i>
             Dossier n° {{$d->dossier_id}}
           </a>
         </div>
+        @endif
       </div>
     </figure>
     @foreach($replies as $r)

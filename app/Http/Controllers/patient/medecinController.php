@@ -3,24 +3,23 @@
 namespace App\Http\Controllers\patient;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; 
 use App\Models\Dossier;
 use App\Models\DossierUser;
 use App\Models\DossierUserSpecialite;
-use App\Models\Models\DossierAccessHistory;
+use App\Models\DossierAccessHistory;
 use App\Models\Specialite;
 use App\Models\User;
 use App\Models\Ville;
 use Auth;
 
-class patientController extends Controller
+class medecinController extends Controller
 {
     public function mesmedecins()
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
         $patientDossierId = $dossier->id;
-        $listeMedecins = User::with(['Country', 'Ville', 'Specialite'])
-            ->where('role_id', 3)
+        $listeMedecins = User::where('role_id', 3)
             ->whereHas('dossierUsers', function ($query) use ($patientDossierId) {
                 $query->where('dossier_id', $patientDossierId);
             })
@@ -30,10 +29,11 @@ class patientController extends Controller
         return view('patient.medecins.mesmedecins', compact('listeMedecins', 'dossier'));
     }
 
-    public function medecin($id_medecin)
+    public function medecin($id)
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        $medecin = User::with('Organisme', 'Specialite', 'Ville', 'Country')->findorFail($id_medecin);
+        $medecin = User::findorFail($id);
+
         return view('patient.medecins.medecin', compact('dossier','medecin'));
     }
 
@@ -77,14 +77,14 @@ class patientController extends Controller
                 $dossier_user_specialite->save();
             }
         }
-        return redirect('patient/medecins/mesmedecins')->with('success', 'Specialties restrictions updated successfully.');
+
+        return redirect('patient/medecins/mesmedecins');
     }
 
     public function tousmedecins(Request $request)
     {
         $dossier = Dossier::where('user_id', Auth::user()->id)->first();
-        $query = User::with(['Country', 'Specialite', 'Ville', 'Organisme'])
-            ->where('role_id', 3)
+        $query = User::where('role_id', 3)
             ->whereNotNull('user_approuved_at');
 
         // Check if a country is selected
@@ -118,7 +118,7 @@ class patientController extends Controller
             'granted' => true,
             'created_by' => Auth::user()->id
         ]);
-        return redirect('patient/medecins/tousmedecins',compact('dossier'));
+        return redirect('patient/tousmedecins');
     }
 
     public function deleteMedecin($id)
@@ -134,6 +134,6 @@ class patientController extends Controller
             'granted' => false,
             'created_by' => Auth::user()->id
         ]);
-        return redirect('patient/medecins/mesmedecins');
+        return redirect('patient/mesmedecins');
     }
 }
